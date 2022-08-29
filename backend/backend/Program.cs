@@ -31,7 +31,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 
 // DB Connection
-var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
+var connection = builder.Configuration["MySQLConnection:MySQLConnectionStringDocker"];
+// var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"]; // Para Executar em Debug
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
 builder.Services.AddDbContext<MySQLContext>(options => options
     .UseMySql(connection, serverVersion)

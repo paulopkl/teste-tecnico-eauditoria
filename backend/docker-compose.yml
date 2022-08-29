@@ -5,6 +5,7 @@ services:
     image: mysql:5.7
     ports:
       - 3306:3306
+    hostname: database_backend
     environment:
       MYSQL_ROOT_PASSWORD: backend
       MYSQL_DATABASE: admin
@@ -26,14 +27,14 @@ services:
       TZ: America/Sao_Paulo
       ASPNETCORE_ENVIRONMENT: Development
     ports:
-      - 5001:80
-      - 5001:5001
+      # - 80:80 # Para ASPNETCORE_ENVIRONMENT: Production
+      - 5001:80 # Para ASPNETCORE_ENVIRONMENT: Development
     networks:
       - rental_company_network
 
-volumes:
-  db-volume:
-    driver: local
+# volumes:
+#   db-volume:
+#     driver: local
   
 networks:
   rental_company_network:

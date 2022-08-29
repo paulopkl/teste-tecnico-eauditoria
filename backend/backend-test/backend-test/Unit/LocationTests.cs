@@ -15,25 +15,25 @@ namespace backend_test.Unit
         [Trait( "Unit", "Location" )]
         public void GetLocations()
         {
-            List<Movie> movies = new List<Movie>() 
+            List<Location> locations = new List<Location>() 
             {
-                new Movie() { }
+                new Location() { }
             };
 
-            Mock<IMovieRepository> movieRepoMock = new();
+            Mock<ILocationRepository> locationRepoMock = new();
 
-            movieRepoMock
+            locationRepoMock
                 .Setup((x) => x.FindAll())
-                .Returns(movies);
+                .Returns(locations);
 
-            var controller = new MovieController(null, movieRepoMock.Object);
+            var controller = new LocationController(null, locationRepoMock.Object);
 
-            var ret = controller.GetAllMovies();
+            var ret = controller.GetAllLocations();
 
             ret.Should().BeOfType<OkObjectResult>()
                 .Which
                 .Value
-                .As<List<Movie>>();
+                .As<List<Location>>();
         }
 
         [Fact(DisplayName = "Get Location By Id")]
