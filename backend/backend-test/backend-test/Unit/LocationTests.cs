@@ -40,22 +40,69 @@ namespace backend_test.Unit
         [Trait("Unit", "Location")]
         public void GetOneLocation()
         {
-            Movie movie = new() { };
+            Location location = new() { };
+            LocationFormatted locationFormatted = new() { };
 
-            Mock<IMovieRepository> movieRepoMock = new();
+            Mock<ILocationRepository> locationRepoMock = new();
 
-            movieRepoMock
+            locationRepoMock
                 .Setup((x) => x.FindById(It.IsAny<long>()))
-                .Returns(movie);
+                .Returns(location);
 
-            var controller = new MovieController(null, movieRepoMock.Object);
+            locationRepoMock
+                .Setup((x) => x.FindbyIdJoin(It.IsAny<long>()))
+                .Returns(locationFormatted);
 
-            var ret = controller.GetMovieById(It.IsAny<long>());
+            var controller = new LocationController(null, locationRepoMock.Object);
+
+            var ret = controller.GetLocationById(It.IsAny<long>());
 
             ret.Should().BeOfType<OkObjectResult>()
                 .Which
                 .Value
-                .As<Movie>();
+                .As<LocationFormatted>();
+        }
+
+        [Fact(DisplayName = "Update Location By Id")]
+        [Trait("Unit", "Location")]
+        public void UpdateClient()
+        {
+            Location location = new() { };
+            LocationRequest newLocation = new() { };
+
+            Mock<ILocationRepository> clientRepoMock = new();
+
+            clientRepoMock
+                .Setup((x) => x.UpdateLocation(It.IsAny<long>(), It.IsAny<Location>()))
+                .Returns(location);
+
+            var controller = new LocationController(null, clientRepoMock.Object);
+
+            var ret = controller.UpdateLocation(location.Id, newLocation);
+
+            ret.Should().BeOfType<OkObjectResult>()
+                .Which
+                .Value
+                .As<ClientRequestResponse>();
+        }
+
+        [Fact(DisplayName = "Remove Location By Id")]
+        [Trait("Unit", "Location")]
+        public void RemoveClient()
+        {
+            Mock<ILocationRepository> locationRepoMock = new();
+
+            locationRepoMock
+                .Setup((x) => x.DeleteLocation(It.IsAny<long>()));
+
+            var controller = new LocationController(null, locationRepoMock.Object);
+
+            var ret = controller.RemoveLocation(It.IsAny<long>());
+
+            ret.Should().BeOfType<OkObjectResult>()
+                .Which
+                .Value
+                .As<long>();
         }
     }
 }
